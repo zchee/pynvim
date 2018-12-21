@@ -7,8 +7,13 @@ from pynvim.compat import IS_PYTHON3
 
 # on python3 we only support asyncio, as we expose it to plugins
 if IS_PYTHON3:
-    from pynvim.msgpack_rpc.event_loop.asyncio import AsyncioEventLoop
-    EventLoop = AsyncioEventLoop
+    try:
+        # uvloop is faster than asyncio
+        from pynvim.msgpack_rpc.event_loop.uvloop import UVLoopEventLoop
+        EventLoop = UVLoopEventLoop
+    except ImportError:
+        from pynvim.msgpack_rpc.event_loop.asyncio import AsyncioEventLoop
+        EventLoop = AsyncioEventLoop
 else:
     try:
         # libuv is fully implemented in C, use it when available

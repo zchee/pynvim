@@ -33,6 +33,8 @@ if sys.version_info < (3, 4):
 if platform.python_implementation() != 'PyPy':
     # pypy already includes an implementation of the greenlet module
     install_requires.append('greenlet')
+    # uvloop faster than asyncio
+    extras_require['uvloop'] = 'uvloop>=0.14.0'
 
 setup(name='pynvim',
       version='0.4.3',
